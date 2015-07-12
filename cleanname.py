@@ -1,9 +1,14 @@
 import os
 import string
 import re
+import argparse
 
-ar = ['Episode 1','Episode 2','Episode 3', 'Episode 4', 'Episode 5', 'Episode 6', 'Episode 7', 'Episode 8', 'Episode 9']
-dir = "E:\Stuff\TV\TVSHOWDIR"
+parser = argparse.ArgumentParser()
+parser.add_argument("directory", help="Directory to clean names of files of")
+args = parser.parse_args()
+
+ar = ['Episode 1','Episode 2','Episode 3', 'Episode 4', 'Episode 5', 'Episode 6', 'Episode 7', 'Episode 8', 'Episode 9', 'Episode 10', 'Episode 11', 'Episode 12']
+dir = args.directory
 files = os.listdir(dir)
 
 
@@ -25,9 +30,9 @@ for files in files:
             else:
                 name = name + ' ' + strs
         name = string.strip(name)
-        #num = str(int(string.split(strs[0],'title')[1]) + 8)
-    #    if int(num) < 10:
-     #       num = '0' + num
-      #  name = name + num + ' - ' + ar[int(num) - 1] + '.' + strs[1]
+        num = str(int(string.split(strs[0],'title')[1]) + 8)
+        if int(num) < 10:
+            num = '0' + num
+        name = name + num + ' - ' + ar[int(num) - 1] + '.' + strs[1]
         print name
         os.rename(dir + '\\' + files, dir + '\\' + name)
