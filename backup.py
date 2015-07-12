@@ -1,9 +1,14 @@
 import shutil
 import datetime
 import os
-now = datetime.datetime.now()
-
 import errno, os, stat, shutil
+import argparse
+
+now = datetime.datetime.now()
+parser = argparse.ArgumentParser()
+parser.add_argument("directory", metavar='D', nargs='+', help="Directory(ies) to backup")
+parser.add_argument("backup_location", metavar='B', help="Directory to make the backup in")
+args = parser.parse_args()
 
 def handleRemoveReadonly(func, path, exc):
   excvalue = exc[1]
@@ -13,18 +18,13 @@ def handleRemoveReadonly(func, path, exc):
   else:
       raise
 #remove old back up
-for f in os.listdir("E:\Windows Backup"):
-    temp = "E:\Windows Backup\\" + f
+for f in os.listdir(args.backup_location):
+    temp = args.backup_location + f
+    print temp
     file_time = datetime.datetime.fromtimestamp(os.path.getmtime(temp))
     if file_time < now + datetime.timedelta(weeks=-4):
         shutil.rmtree(temp, ignore_errors=False, onerror=handleRemoveReadonly)
 #backup
-src = "C:\Users\Michael\Saved Games"
-dst = "E:\\Windows Backup\\" + str(now.year) + "-" + str(now.month) + "-" + str(now.day) + "\Saved Games"
-shutil.copytree(src, dst)
-src = "C:\Users\Michael\Desktop"
-dst = "E:\\Windows Backup\\" + str(now.year) + "-" + str(now.month) + "-" + str(now.day) + "\Desktop"
-shutil.copytree(src, dst)
-src = "C:\Users\Michael\Documents"
-dst = "E:\\Windows Backup\\" + str(now.year) + "-" + str(now.month) + "-" + str(now.day) + "\Documents"
-shutil.copytree(src, dst)
+for src in args.directory:
+    dst = args.backup_location + str(now.year) + "-" + str(now.month) + "-" + str(now.day) + "\Documents"
+    shutil.copytree(src, dst)
