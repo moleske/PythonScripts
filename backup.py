@@ -20,11 +20,11 @@ def handleRemoveReadonly(func, path, exc):
 #remove old back up
 for f in os.listdir(args.backup_location):
     temp = args.backup_location + f
-    print temp
     file_time = datetime.datetime.fromtimestamp(os.path.getmtime(temp))
     if file_time < now + datetime.timedelta(weeks=-4):
         shutil.rmtree(temp, ignore_errors=False, onerror=handleRemoveReadonly)
 #backup
 for src in args.directory:
-    dst = args.backup_location + str(now.year) + "-" + str(now.month) + "-" + str(now.day) + "\Documents"
+    dir = src.split('\\')
+    dst = args.backup_location + str(now.year) + "-" + str(now.month) + "-" + str(now.day) + "\\" + dir[len(dir)-1]
     shutil.copytree(src, dst)
