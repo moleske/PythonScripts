@@ -1,6 +1,5 @@
 import shutil
 import datetime
-import os
 import errno, os, stat, shutil
 import argparse
 
